@@ -1,6 +1,6 @@
-#Monitor with two conditional variables
+# Monitor with two conditional variables
 
-#Build
+## Build
 
 ```$xslt
     make
