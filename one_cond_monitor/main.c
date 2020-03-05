@@ -13,27 +13,20 @@ void* producer(void* arg) {
     printf("HELLO, PRODUCER\n");
     for (int i = 0; i < 10; i++) {
         pthread_mutex_lock(&lock);
-        while (ready == 1){
+        if (ready == 1){
+	  //здесь по смыслу проверка, что потребитель ещё не обработал предыдущее событие;
+	  //надо либо делать очередь, либо просто не делать ничего.
             pthread_mutex_unlock(&lock);
+	    continue;
         }
         buf = i;
         ready = 1;
         printf ("Producer send: %d \n", buf);
         pthread_cond_signal(&add);
         pthread_mutex_unlock(&lock);
-    };
-
-    pthread_mutex_lock(&lock);
-    while (ready == 1){
-        pthread_mutex_unlock(&lock);
     }
-    done = true;
-    ready = 1;
-    pthread_cond_signal(&add);
-    pthread_mutex_unlock(&lock);
-
     return NULL;
-};
+}
 
 void* consumer(void* arg) {
     int num = *(int*)arg;
@@ -45,15 +38,18 @@ void* consumer(void* arg) {
             pthread_cond_wait(&add, &lock);
             printf ("Consumer %d awoke \n", num);
         }
-        if (done) {
+	//здесь какое-нибудь действие, что мы обрабатываем событие 
+	//        if (done) {
+	ready = 0;//типа того что обработали
             pthread_mutex_unlock(&lock);
-            break;
+	    //            break;
         }
+    //это не должно делать за пределами разлоченного мьютекса
         ready = 0;
         int b = buf;
         printf ("Square from consumer %d: %d\n", num, b * b);
         pthread_mutex_unlock(&lock);
-
+	//задержка должна быть в поставщике
         sleep(1);
     }
     return NULL;
