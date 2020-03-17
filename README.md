@@ -2,6 +2,6 @@
 
 ## First lab
 
-The first lab is located in two directories: `one_cond_monitor`, `two_cond_monitor`.
+The first lab is located in `one_cond_monitor` directory.
 
-A monitor for operating systems linux has been implemented using `pthread`.
+It is a monitor for operating systems linux has been implemented using `pthread`.
