@@ -14,7 +14,7 @@ void* producer(void* arg) {
         pthread_mutex_lock(&lock);
         if (ready == 1){
             pthread_mutex_unlock(&lock);
-	    continue;
+	        continue;
         }
         buf = i;
         ready = 1;
