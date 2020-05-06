@@ -19,7 +19,6 @@ void sigHupHandler(int r) {
 int main() {
     char buffer[256];
 
-    // create socket
     int socket_fd;
     socket_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (socket_fd < 0) {
